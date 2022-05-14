@@ -24,6 +24,7 @@ defmodule Elibrary.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Elibrary.DataCase
+      import Elibrary.Factories
     end
   end
 

@@ -2,12 +2,14 @@ import Config
 
 # Configure your database
 config :elibrary, Elibrary.Repo,
+  adapter: Ecto.Adapters.Postgres,
   username: "postgres",
+  # password: "postgres",
   password: "55155166778I",
   hostname: "localhost",
   database: "elibrary_dev",
-  stacktrace: true,
-  show_sensitive_data_on_connection_error: true,
+  # stacktrace: true,
+  # show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
 # For development, we disable any cache and enable

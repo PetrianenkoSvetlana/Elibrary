@@ -23,6 +23,7 @@ defmodule ElibraryWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import ElibraryWeb.ConnCase
+      import Elibrary.DataCase
 
       alias ElibraryWeb.Router.Helpers, as: Routes
 

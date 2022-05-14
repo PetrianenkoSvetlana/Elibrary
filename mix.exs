@@ -48,7 +48,23 @@ defmodule Elibrary.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:proper_case, "~> 1.0.2"},
+      # passwordhash
+      # {:argon2_elixir, "~> 3.0"},
+      # auth
+      {:guardian, "~> 2.0"},
+      # policy
+      {:bodyguard, "~> 2.4"},
+      # code analys
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      # testing
+      {:ex_machina, "~> 2.7.0", only: [:test]},
+      {:faker, "~> 0.13", only: [:test, :dev]},
+      # pagination
+      {:scrivener_ecto, "~> 2.0"},
+      # Email struct via ecto
+      {:email_ecto_type, "~> 0.1"}
     ]
   end
 
