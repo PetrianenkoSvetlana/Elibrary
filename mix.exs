@@ -64,7 +64,8 @@ defmodule Elibrary.MixProject do
       # pagination
       {:scrivener_ecto, "~> 2.0"},
       # Email struct via ecto
-      {:email_ecto_type, "~> 0.1"}
+      {:email_ecto_type, "~> 0.1"},
+      {:isbnex, "~> 0.2.0"}
     ]
   end
 
