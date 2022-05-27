@@ -2,7 +2,6 @@ defmodule Elibrary.Books.Commands.DeleteBookTest do
   use Elibrary.DataCase
 
   alias Elibrary.Books
-  @tag :xo
 
   test "process/1 delete_book test" do
     book = insert(:book)

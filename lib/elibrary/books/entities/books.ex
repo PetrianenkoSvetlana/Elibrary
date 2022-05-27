@@ -37,7 +37,6 @@ defmodule Elibrary.Books.Entities.Book do
     |> cast(attrs, @required++@optional)
     |> validate_required(@required)
     |> unique_constraint(:ISBN)
-    |> validate_format(:ISBN, ~r/^(?:ISBN(?:-1[03])?:? )?(?=[-0-9 ]{17}$|[-0-9X ]{13}$|[0-9X]{10}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?(?:[0-9]+[- ]?){2}[0-9X]$/, message: "invalid_format")
   end
 
   def update_changeset(%__MODULE__{} = book, attrs) do
@@ -45,6 +44,5 @@ defmodule Elibrary.Books.Entities.Book do
     |> cast(attrs, @required++@optional)
     |> validate_required(@required)
     |> unique_constraint(:ISBN)
-    |> validate_format(:ISBN, ~r/^(?:ISBN(?:-1[03])?:? )?(?=[-0-9 ]{17}$|[-0-9X ]{13}$|[0-9X]{10}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?(?:[0-9]+[- ]?){2}[0-9X]$/, message: "invalid_format")
   end
 end

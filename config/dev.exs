@@ -8,7 +8,7 @@ config :elibrary, Elibrary.Repo,
   password: "55155166778I",
   hostname: "localhost",
   database: "elibrary_dev",
-  # stacktrace: true,
+  stacktrace: true,
   # show_sensitive_data_on_connection_error: true,
   pool_size: 10
 

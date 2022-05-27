@@ -24,6 +24,12 @@ defmodule ElibraryWeb.ConnCase do
       import Phoenix.ConnTest
       import ElibraryWeb.ConnCase
       import Elibrary.DataCase
+      import Elibrary.Factories
+
+      alias Elibrary.Accounts.{
+        Entities.User,
+      }
+      alias Elibrary.Books.Entities.Book
 
       alias ElibraryWeb.Router.Helpers, as: Routes
 
