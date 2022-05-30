@@ -3,6 +3,9 @@ defmodule Elibrary.Books.Entities.Book do
 
   import Ecto.Changeset
 
+  alias Elibrary.Repo
+  alias Elibrary.Tags.Entities.Tag
+
   @required [
     :title,
     :ISBN,
@@ -29,20 +32,27 @@ defmodule Elibrary.Books.Entities.Book do
     field :thematics, :string
     field :date_of_publication, :date
 
+    many_to_many :tags, Tag, join_through: "books_tags"
+
     timestamps()
   end
 
   def create_changeset(%__MODULE__{} = book, attrs) do
     book
+    |> Repo.preload(:tags)
     |> cast(attrs, @required++@optional)
     |> validate_required(@required)
     |> unique_constraint(:ISBN)
+    # Set the association
+    |> put_assoc(:tags, [attrs.tags])
   end
 
   def update_changeset(%__MODULE__{} = book, attrs) do
     book
+    |> Repo.preload(:tags)
     |> cast(attrs, @required++@optional)
     |> validate_required(@required)
     |> unique_constraint(:ISBN)
+    |> put_assoc(:tags, [attrs.tags])
   end
 end

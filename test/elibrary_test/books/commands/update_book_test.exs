@@ -12,7 +12,8 @@ defmodule Elibrary.Books.Commands.UpdateBookTest do
       thematics: "horror",
       type: "book",
       language: "france",
-      country: "France"
+      country: "France",
+      tags: insert(:tag)
     })
     attrs = %{
       title: "Кто-то",
@@ -21,9 +22,11 @@ defmodule Elibrary.Books.Commands.UpdateBookTest do
       thematics: "horror&roman",
       type: "poem",
       language: "russian",
-      country: "Russia"
+      country: "Russia",
+      tags: insert(:tag)
     }
     assert {:ok, updated_book} = Books.update_book(book, attrs)
+
     assert updated_book.title == attrs.title
     assert updated_book.author == attrs.author
     assert updated_book.publisher == attrs.publisher

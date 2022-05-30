@@ -3,6 +3,7 @@ defmodule Elibrary.Factories do
 
   use Elibrary.Factories.{
     Accounts.UserFactory,
-    Books.BookFactory
+    Books.BookFactory,
+    Tags.TagFactory
   }
 end
