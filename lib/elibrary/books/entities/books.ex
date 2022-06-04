@@ -5,6 +5,7 @@ defmodule Elibrary.Books.Entities.Book do
 
   alias Elibrary.Repo
   alias Elibrary.Tags.Entities.Tag
+  alias Elibrary.Comments.Entities.Comment
 
   @required [
     :title,
@@ -32,7 +33,8 @@ defmodule Elibrary.Books.Entities.Book do
     field :thematics, :string
     field :date_of_publication, :date
 
-    many_to_many :tags, Tag, join_through: "books_tags"
+    many_to_many :tags, Tag, join_through: Elibrary.Relations.BookTag
+    has_many :comment, Comment
 
     timestamps()
   end

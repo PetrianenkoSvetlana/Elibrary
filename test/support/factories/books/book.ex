@@ -17,7 +17,7 @@ defmodule Elibrary.Factories.Books.BookFactory do
           author: author,
           publisher: publisher,
           thematics: thematics,
-        } |> IO.inspect()
+        }
       end
     end
   end

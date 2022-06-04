@@ -2,7 +2,7 @@ defmodule Elibrary.Books.Commands.UpdateBookTest do
   use Elibrary.DataCase
 
   alias Elibrary.Books
-  @tag :xo
+  # @tag :xo
 
   test "process/1 update_book test" do
     book = insert(:book, %{
@@ -26,7 +26,6 @@ defmodule Elibrary.Books.Commands.UpdateBookTest do
       tags: insert(:tag)
     }
     assert {:ok, updated_book} = Books.update_book(book, attrs)
-
     assert updated_book.title == attrs.title
     assert updated_book.author == attrs.author
     assert updated_book.publisher == attrs.publisher
@@ -34,5 +33,6 @@ defmodule Elibrary.Books.Commands.UpdateBookTest do
     assert updated_book.type == attrs.type
     assert updated_book.language == attrs.language
     assert updated_book.country == attrs.country
+    assert updated_book.tags == [attrs.tags]
   end
 end

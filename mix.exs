@@ -51,8 +51,7 @@ defmodule Elibrary.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:proper_case, "~> 1.0.2"},
       # passwordhash
-      # {:bcrypt_elixir, "~> 3.0"},
-      # {:argon2_elixir, "~> 3.0"},
+      {:argon2_elixir, "~> 3.0"},
       # auth
       {:guardian, "~> 2.0"},
       # policy
