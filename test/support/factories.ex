@@ -4,6 +4,8 @@ defmodule Elibrary.Factories do
   use Elibrary.Factories.{
     Accounts.UserFactory,
     Books.BookFactory,
-    Tags.TagFactory
+    Tags.TagFactory,
+    Comments.CommentFactory,
+    Tops.TopFactory
   }
 end

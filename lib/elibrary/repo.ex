@@ -7,6 +7,7 @@ defmodule Elibrary.Repo do
     case __MODULE__.get(query, id) do
       %_{} = schema ->
         {:ok, schema}
+
       nil ->
         {:error, :not_found}
     end

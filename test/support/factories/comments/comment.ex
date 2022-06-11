@@ -5,10 +5,17 @@ defmodule Elibrary.Factories.Comments.CommentFactory do
       alias Faker.Lorem
 
       def comment_factory(attrs) do
-        user = 
-        comment = Map.get(attrs, :comment, Lorem.word())
-        email = Map.get(attrs, :email, insert(:user).email)
+        user = Map.get(attrs, :user, insert(:user))
+        book = Map.get(attrs, :book, insert(:book))
+        comment = Map.get(attrs, :comment, Lorem.sentence())
+        email = user.email
 
+        %Comment{
+          comment: comment,
+          email: email,
+          book: book,
+          user: user
+        }
       end
     end
   end

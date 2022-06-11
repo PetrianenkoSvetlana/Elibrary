@@ -3,7 +3,7 @@ defmodule Elibrary.Accounts.Commands.UpdateUserTest do
 
   alias Elibrary.Accounts
 
-  test "process/1 update_user test" do
+  test "process/2 update_user test" do
     user = insert(:user, %{email: "non_updated@email.com"})
     attrs = %{email: "update@em.com"}
     assert {:ok, updated_user} = Accounts.update_user(user, attrs)

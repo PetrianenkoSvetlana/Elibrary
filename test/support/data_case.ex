@@ -16,7 +16,6 @@ defmodule Elibrary.DataCase do
 
   use ExUnit.CaseTemplate
 
-
   using do
     quote do
       alias Elibrary.Repo

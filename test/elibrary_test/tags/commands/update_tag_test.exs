@@ -3,7 +3,7 @@ defmodule Elibrary.Tags.Commands.UpdateTagTest do
 
   alias Elibrary.Tags
 
-  test "process/1 update_tag test" do
+  test "process/2 update_tag test" do
     tag = insert(:tag, %{tag: "retern"})
     attrs = %{tag: "super"}
     assert {:ok, updated_tag} = Tags.update_tag(tag, attrs)

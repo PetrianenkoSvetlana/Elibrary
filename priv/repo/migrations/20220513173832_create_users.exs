@@ -11,7 +11,7 @@ defmodule Elibrary.Repo.Migrations.CreateUsers do
       add :birthday, :date
       add :country, :string
       add :city, :string
-
+      # add :comment_id, references(:comment)
       timestamps()
     end
 

@@ -27,8 +27,9 @@ defmodule ElibraryWeb.ConnCase do
       import Elibrary.Factories
 
       alias Elibrary.Accounts.{
-        Entities.User,
+        Entities.User
       }
+
       alias Elibrary.Books.Entities.Book
 
       alias ElibraryWeb.Router.Helpers, as: Routes

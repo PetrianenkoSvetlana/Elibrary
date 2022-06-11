@@ -39,5 +39,4 @@ defmodule Elibrary.Comments.Entities.Comment do
     |> assoc_constraint(:user)
     |> unique_constraint(:email)
   end
-
 end

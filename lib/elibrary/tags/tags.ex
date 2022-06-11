@@ -10,12 +10,12 @@ defmodule Elibrary.Tags do
     ListTags
   }
 
-  #Делегируем функции в Commands
+  # Делегируем функции в Commands
   defdelegate create_tag(attrs), to: CreateTag, as: :process
   defdelegate delete_tag(tag), to: DeleteTag, as: :process
   defdelegate update_tag(tag, attrs), to: UpdateTag, as: :process
 
-  #Делегируем функции в Queries
+  # Делегируем функции в Queries
   defdelegate get_tag(id), to: GetTag, as: :process
   defdelegate list_tags(), to: ListTags, as: :process
 end

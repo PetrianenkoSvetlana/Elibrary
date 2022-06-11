@@ -6,6 +6,7 @@ defmodule Elibrary.Books.Entities.Book do
   alias Elibrary.Repo
   alias Elibrary.Tags.Entities.Tag
   alias Elibrary.Comments.Entities.Comment
+  alias Elibrary.Tops.Entities.Top
 
   @required [
     :title,
@@ -32,9 +33,11 @@ defmodule Elibrary.Books.Entities.Book do
     field :country, :string
     field :thematics, :string
     field :date_of_publication, :date
+    field :top, :decimal, virtual: true
 
     many_to_many :tags, Tag, join_through: Elibrary.Relations.BookTag
-    has_many :comment, Comment
+    has_many :comments, Comment
+    has_many :tops, Top
 
     timestamps()
   end
@@ -42,7 +45,7 @@ defmodule Elibrary.Books.Entities.Book do
   def create_changeset(%__MODULE__{} = book, attrs) do
     book
     |> Repo.preload(:tags)
-    |> cast(attrs, @required++@optional)
+    |> cast(attrs, @required ++ @optional)
     |> validate_required(@required)
     |> unique_constraint(:ISBN)
     # Set the association
@@ -52,7 +55,7 @@ defmodule Elibrary.Books.Entities.Book do
   def update_changeset(%__MODULE__{} = book, attrs) do
     book
     |> Repo.preload(:tags)
-    |> cast(attrs, @required++@optional)
+    |> cast(attrs, @required ++ @optional)
     |> validate_required(@required)
     |> unique_constraint(:ISBN)
     |> put_assoc(:tags, [attrs.tags])
