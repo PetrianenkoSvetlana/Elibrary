@@ -6,11 +6,11 @@ defmodule Elibrary.Tops.Queries.AvgEstimationComment do
     Tops.Entities.Top
   }
 
-  def process (comment_id) do
+  def process(comment_id) do
     Top
     |> by_comment(comment_id)
     |> Repo.aggregate(:avg, :estimation)
-    |> Decimal.round(2)
+    |> avg()
   end
 
   defp by_comment(query, comment_id) do
@@ -18,8 +18,10 @@ defmodule Elibrary.Tops.Queries.AvgEstimationComment do
       where: top.comment_id == ^comment_id
   end
 
-  # defp avg(query) do
-  #   from top in query,
-  #     select: AVG(top.estimation)
-  # end
+  defp avg(num) do
+    case num do
+      nil -> 0
+      _ -> Decimal.to_float(num)
+    end
+  end
 end

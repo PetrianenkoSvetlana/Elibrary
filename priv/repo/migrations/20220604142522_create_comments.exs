@@ -4,13 +4,12 @@ defmodule Elibrary.Repo.Migrations.CreateComments do
   def change do
     create table(:comments) do
       add :comment, :string, nill: false
-      add :email, :string, nill: false
       add :user_id, references(:users)
       add :book_id, references(:books)
 
       timestamps()
     end
 
-    create unique_index(:comments, [:email])
+    create unique_index(:comments, [:inserted_at, :user_id, :book_id])
   end
 end

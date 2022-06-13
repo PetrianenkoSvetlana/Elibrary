@@ -1,9 +1,9 @@
-defmodule ElibraryWeb.ConnCase do
+defmodule ElibraryWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
-  tests that require setting up a connection.
+  channel tests.
 
-  Such tests rely on `Phoenix.ConnTest` and also
+  Such tests rely on `Phoenix.ChannelTest` and also
   import other functionality to make it easier
   to build common data structures and query the data layer.
 
@@ -11,7 +11,7 @@ defmodule ElibraryWeb.ConnCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use ElibraryWeb.ConnCase, async: true`, although
+  by setting `use CharlistWeb.ChannelCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -22,21 +22,9 @@ defmodule ElibraryWeb.ConnCase do
 
   using do
     quote do
-      # Import conveniences for testing with connections
-      import Plug.Conn
-      import Phoenix.ConnTest
-      import ElibraryWeb.ConnCase
-      import Elibrary.DataCase
-      import Elibrary.Factories
-
-      alias Elibrary.Accounts.{
-        Entities.User,
-        Services.Guardian
-      }
-
-      alias Elibrary.Books.Entities.Book
-
-      alias ElibraryWeb.Router.Helpers, as: Routes
+      # Import conveniences for testing with channels
+      import Phoenix.ChannelTest
+      import ElibraryWeb.ChannelCase
 
       # The default endpoint for testing
       @endpoint ElibraryWeb.Endpoint
@@ -45,7 +33,7 @@ defmodule ElibraryWeb.ConnCase do
 
   setup tags do
     pid = Sandbox.start_owner!(Repo, shared: not tags[:async])
-    on_exit(fn -> Sandbox.stop_owner(pid) end)
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    on_exit(fn -> Sandbox.start_owner(pid) end)
+    :ok
   end
 end

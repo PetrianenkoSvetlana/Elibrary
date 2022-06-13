@@ -59,7 +59,6 @@ defmodule Elibrary.Accounts.Entities.User do
   end
 
   defp put_password_hash(%{valid?: true, changes: %{password: password}} = changeset) do
-    # |> IO.inspect()
     change(changeset, Argon2.add_hash(password))
   end
 

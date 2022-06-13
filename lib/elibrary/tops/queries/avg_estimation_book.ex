@@ -6,11 +6,11 @@ defmodule Elibrary.Tops.Queries.AvgEstimationBook do
     Tops.Entities.Top
   }
 
-  def process (book_id) do
+  def process(book_id) do
     Top
     |> by_book(book_id)
     |> Repo.aggregate(:avg, :estimation)
-    |> Decimal.round(2)
+    |> avg()
   end
 
   defp by_book(query, book_id) do
@@ -18,8 +18,10 @@ defmodule Elibrary.Tops.Queries.AvgEstimationBook do
       where: top.book_id == ^book_id
   end
 
-  # defp avg(query) do
-  #   from top in query,
-  #     select: AVG(top.estimation)
-  # end
+  defp avg(num) do
+    case num do
+      nil -> 0
+      _ -> Decimal.to_float(num)
+    end
+  end
 end

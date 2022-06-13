@@ -23,7 +23,10 @@ defmodule ElibraryWeb do
 
       import Plug.Conn
       import ElibraryWeb.Gettext
+
+      alias ElibraryWeb.ApplyParams
       alias ElibraryWeb.Router.Helpers, as: Routes
+      alias Plug.Conn
     end
   end
 

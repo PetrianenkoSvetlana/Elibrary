@@ -1,4 +1,4 @@
-defmodule ElibraryWeb.V1.Elibrary do
+defmodule ElibraryWeb.V1.CommentPolicy do
   @behaviour Bodyguard.Policy
 
   alias Elibrary.Accounts.Entities.User

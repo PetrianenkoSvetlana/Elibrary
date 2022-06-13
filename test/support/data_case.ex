@@ -16,6 +16,9 @@ defmodule Elibrary.DataCase do
 
   use ExUnit.CaseTemplate
 
+  alias Elibrary.Repo
+  alias Ecto.Adapters.SQL.Sandbox
+
   using do
     quote do
       alias Elibrary.Repo
@@ -29,18 +32,19 @@ defmodule Elibrary.DataCase do
   end
 
   setup tags do
-    Elibrary.DataCase.setup_sandbox(tags)
+    pid = Sandbox.start_owner!(Repo, shared: not tags[:async])
+    on_exit(fn -> Sandbox.stop_owner(pid) end)
     :ok
   end
 
-  @doc """
-  Sets up the sandbox based on the test tags.
-  """
-  def setup_sandbox(tags) do
-    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Elibrary.Repo, shared: not tags[:async])
-    on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
-    :ok
-  end
+  # @doc """
+  # Sets up the sandbox based on the test tags.
+  # """
+  # def setup_sandbox(tags) do
+  #   pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Elibrary.Repo, shared: not tags[:async])
+  #   on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
+  #   :ok
+  # end
 
   @doc """
   A helper that transforms changeset errors into a map of messages.

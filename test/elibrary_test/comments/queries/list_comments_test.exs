@@ -3,12 +3,13 @@ defmodule Elibrary.Comments.Queries.ListCommentsTest do
 
   alias Elibrary.Comments
 
-  test "process/2 list_comments test" do
+  test "process/2 list_comments for book test" do
     book_1 = insert(:book)
     book_2 = insert(:book)
-    insert_list(2, :comment, %{book_id: book_1})
-    insert_list(2, :comment, %{book_id: book_2})
-    result = Comments.list_comments(book_1.id)
-    # assert length(result) == 2
+    user = insert(:user)
+    insert_list(2, :comment, %{book: book_1, user: user})
+    insert_list(2, :comment, %{book: book_2, user: user})
+    result = Comments.list_comments(book_1.id).entries
+    assert length(result) == 2
   end
 end

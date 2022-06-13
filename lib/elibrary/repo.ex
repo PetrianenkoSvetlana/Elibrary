@@ -3,6 +3,8 @@ defmodule Elibrary.Repo do
     otp_app: :elibrary,
     adapter: Ecto.Adapters.Postgres
 
+  use Scrivener, page_size: 10
+
   def find(query, id) do
     case __MODULE__.get(query, id) do
       %_{} = schema ->

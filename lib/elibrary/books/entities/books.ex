@@ -7,6 +7,7 @@ defmodule Elibrary.Books.Entities.Book do
   alias Elibrary.Tags.Entities.Tag
   alias Elibrary.Comments.Entities.Comment
   alias Elibrary.Tops.Entities.Top
+  alias Elibrary.Relations.BookTag
 
   @required [
     :title,
@@ -20,7 +21,9 @@ defmodule Elibrary.Books.Entities.Book do
     :type,
     :language,
     :country,
-    :date_of_publication
+    :creation_year,
+    :date_of_publication,
+    :top
   ]
 
   schema "books" do
@@ -31,11 +34,12 @@ defmodule Elibrary.Books.Entities.Book do
     field :publisher, :string
     field :language, :string
     field :country, :string
+    field :creation_year, :integer
     field :thematics, :string
     field :date_of_publication, :date
-    field :top, :decimal, virtual: true
+    field :top, :float, virtual: true
 
-    many_to_many :tags, Tag, join_through: Elibrary.Relations.BookTag
+    many_to_many :tags, Tag, join_through: BookTag
     has_many :comments, Comment
     has_many :tops, Top
 
@@ -49,7 +53,7 @@ defmodule Elibrary.Books.Entities.Book do
     |> validate_required(@required)
     |> unique_constraint(:ISBN)
     # Set the association
-    |> put_assoc(:tags, [attrs.tags])
+    |> put_assoc(:tags, attrs.tags)
   end
 
   def update_changeset(%__MODULE__{} = book, attrs) do
@@ -58,6 +62,6 @@ defmodule Elibrary.Books.Entities.Book do
     |> cast(attrs, @required ++ @optional)
     |> validate_required(@required)
     |> unique_constraint(:ISBN)
-    |> put_assoc(:tags, [attrs.tags])
+    |> put_assoc(:tags, attrs.tags)
   end
 end

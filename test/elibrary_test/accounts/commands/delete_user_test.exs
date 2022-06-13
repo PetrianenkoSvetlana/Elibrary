@@ -6,7 +6,6 @@ defmodule Elibrary.Accounts.Commands.DeleteUserTest do
   test "process/1 delete_user test" do
     user = insert(:user)
     assert {:ok, _result} = Accounts.delete_user(user)
-    # |> IO.inspect()
     assert {:error, :not_found} = Accounts.get_user(user.id)
   end
 end

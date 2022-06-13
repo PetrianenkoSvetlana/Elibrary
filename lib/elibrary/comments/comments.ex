@@ -17,5 +17,5 @@ defmodule Elibrary.Comments do
 
   # Делегируем функции в Queries
   defdelegate get_comment(id), to: GetComment, as: :process
-  defdelegate list_comments(book), to: ListComments, as: :process
+  defdelegate list_comments(book, params \\ %{}), to: ListComments, as: :process
 end

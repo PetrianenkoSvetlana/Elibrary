@@ -11,7 +11,7 @@ defmodule Elibrary.Tops.Entities.Top do
 
   @required [
     :estimation,
-    :user_id,
+    :user_id
   ]
 
   @options [
@@ -37,6 +37,7 @@ defmodule Elibrary.Tops.Entities.Top do
     |> assoc_constraint(:user)
     |> assoc_constraint(:book)
     |> assoc_constraint(:comment)
+
     # |> unique_constraint([:user_id, :book_id, :comment_id])
   end
 
@@ -49,5 +50,4 @@ defmodule Elibrary.Tops.Entities.Top do
     |> assoc_constraint(:book)
     |> assoc_constraint(:comment)
   end
-
 end

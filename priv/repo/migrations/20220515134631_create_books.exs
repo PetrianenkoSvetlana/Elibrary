@@ -10,6 +10,7 @@ defmodule Elibrary.Repo.Migrations.CreateBooks do
       add :publisher, :string, null: false
       add :language, :string
       add :country, :string
+      add :creation_year, :integer
       add :thematics, :string, null: false
       add :date_of_publication, :date
 
