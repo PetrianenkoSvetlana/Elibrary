@@ -8,6 +8,7 @@ defmodule Elibrary.Books.Entities.Book do
   alias Elibrary.Comments.Entities.Comment
   alias Elibrary.Tops.Entities.Top
   alias Elibrary.Relations.BookTag
+  # alias Elibrary.Tops
 
   @required [
     :title,
@@ -39,7 +40,7 @@ defmodule Elibrary.Books.Entities.Book do
     field :date_of_publication, :date
     field :top, :float, virtual: true
 
-    many_to_many :tags, Tag, join_through: BookTag
+    many_to_many :tags, Tag, join_through: BookTag, on_replace: :delete
     has_many :comments, Comment
     has_many :tops, Top
 

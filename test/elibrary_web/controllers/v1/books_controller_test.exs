@@ -7,16 +7,19 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
     {:ok, %{conn: conn}}
   end
 
+  @tag :xo
   test "show/2 return book", %{conn: conn} do
-    book = insert(:book)
+    [tag_1, tag_2] = insert_list(2, :tag)
+    book = insert(:book, %{tags: [tag_1, tag_2]})
+    [comment_1, comment_2] = insert_list(2, :comment, %{book: book})
 
     response =
       conn
       |> get(books_path(conn, :show, book.id))
       |> json_response(200)
 
-    assert response ==
-             %{
+    assert response == %{
+             "book" => %{
                "ISBN" => book."ISBN",
                "author" => book.author,
                "country" => nil,
@@ -29,7 +32,31 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
                "title" => book.title,
                "top" => nil,
                "type" => nil
+             },
+             "tags" => [%{"tag" => tag_1.tag}, %{"tag" => tag_2.tag}],
+             "comments" => %{
+               "entries" => [
+                 %{
+                   "comment" => comment_1.comment,
+                   "book_id" => comment_1.book_id,
+                   "id" => comment_1.id,
+                   "top" => comment_1.top,
+                   "user_id" => comment_1.user_id
+                 },
+                 %{
+                   "comment" => comment_2.comment,
+                   "book_id" => comment_2.book_id,
+                   "id" => comment_2.id,
+                   "top" => comment_2.top,
+                   "user_id" => comment_2.user_id
+                 }
+               ],
+               "page_number" => 1,
+               "page_size" => 10,
+               "total_entries" => 2,
+               "total_pages" => 1
              }
+           }
   end
 
   test "index/2 return list books", %{conn: conn} do

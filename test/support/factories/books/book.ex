@@ -10,13 +10,17 @@ defmodule Elibrary.Factories.Books.BookFactory do
         author = Map.get(attrs, :author, Lorem.word())
         publisher = Map.get(attrs, :publisher, Lorem.word())
         thematics = Map.get(attrs, :thematics, Lorem.word())
+        tags = Map.get(attrs, :tags, [])
+        comments = Map.get(attrs, :comments, [])
 
         %Book{
           title: title,
           ISBN: isbn,
           author: author,
           publisher: publisher,
-          thematics: thematics
+          thematics: thematics,
+          tags: tags,
+          comments: comments
         }
       end
     end

@@ -2,7 +2,6 @@ defmodule Elibrary.Tags.Entities.Tag do
   use Ecto.Schema
 
   import Ecto.Changeset
-  # alias Elibrary.Repo
   alias Elibrary.Books.Entities.Book
   alias Elibrary.Relations.BookTag
 

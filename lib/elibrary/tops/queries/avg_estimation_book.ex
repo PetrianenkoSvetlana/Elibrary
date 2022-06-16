@@ -7,10 +7,13 @@ defmodule Elibrary.Tops.Queries.AvgEstimationBook do
   }
 
   def process(book_id) do
-    Top
-    |> by_book(book_id)
-    |> Repo.aggregate(:avg, :estimation)
-    |> avg()
+    top =
+      Top
+      |> by_book(book_id)
+      |> Repo.aggregate(:avg, :estimation)
+      |> avg()
+
+    %{top: top}
   end
 
   defp by_book(query, book_id) do

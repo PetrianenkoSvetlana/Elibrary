@@ -2,13 +2,16 @@ defmodule ElibraryWeb.V1.BooksController do
   use ElibraryWeb, :controller
 
   alias Elibrary.Books
-  # alias Elibrary.Comments
+  alias Elibrary.Tags
+  alias Elibrary.Comments
 
   action_fallback(ElibraryWeb.FallbackController)
 
-  def show(conn, %{"id" => id}) do
-    with {:ok, book} <- Books.get_book(id) do
-      render(conn, "show.json", %{book: book})
+  def show(conn, %{"id" => id} = params) do
+    with {:ok, book} <- Books.get_book(id),
+         tags <- Tags.list_tags(id),
+         page <- Comments.list_comments(id, params) do
+      render(conn, "show.json", %{book: book, tags: tags, page: page})
     end
   end
 

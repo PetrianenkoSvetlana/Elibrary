@@ -17,5 +17,5 @@ defmodule Elibrary.Tags do
 
   # Делегируем функции в Queries
   defdelegate get_tag(id), to: GetTag, as: :process
-  defdelegate list_tags(), to: ListTags, as: :process
+  defdelegate list_tags(book_id), to: ListTags, as: :process
 end

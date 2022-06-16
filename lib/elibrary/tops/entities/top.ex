@@ -7,6 +7,8 @@ defmodule Elibrary.Tops.Entities.Top do
     Accounts.Entities.User,
     Books.Entities.Book,
     Comments.Entities.Comment
+    # Tops,
+    # Books
   }
 
   @required [

@@ -21,13 +21,7 @@ defmodule ElibraryWeb.V1.TopsView do
     }
   end
 
-  def render("delete.json", %{top: top}) do
-    %{}
+  def render("delete.json", %{top: _top}) do
+    "Delete succesfully"
   end
-
-  # def render("show.json", %{top: top}) do
-  #   %{
-  #     estimation: top.estimation
-  #   }
-  # end
 end

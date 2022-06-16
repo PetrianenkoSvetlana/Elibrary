@@ -8,6 +8,6 @@ defmodule Elibrary.Tops.Queries.AvgEstimationBookTest do
     book = insert(:book)
     Tops.create_top(%{estimation: 3, user_id: user_1.id, book_id: book.id})
     Tops.create_top(%{estimation: 4, user_id: user_2.id, book_id: book.id})
-    assert 3.5 == Tops.avg_estimation_book(book.id)
+    assert %{top: 3.5} == Tops.avg_estimation_book(book.id)
   end
 end

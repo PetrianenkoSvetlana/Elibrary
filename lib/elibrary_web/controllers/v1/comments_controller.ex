@@ -21,10 +21,11 @@ defmodule ElibraryWeb.V1.CommentsController do
 
   action_fallback(ElibraryWeb.FallbackController)
 
-  def index(conn, %{"book_id" => book_id} = params) do
-    page = Comments.list_comments(book_id, params)
-    render(conn, "index.json", %{page: page})
-  end
+  # def index(conn, %{"book_id" => book_id} = params) do
+  #   IO.inspect(params)
+  #   page = Comments.list_comments(book_id, params)
+  #   render(conn, "index.json", %{page: page})
+  # end
 
   def create(conn, %{"current_user" => current_user} = param) do
     with {:ok, param} <- ApplyParams.do_apply(CreateCommentParams, param),

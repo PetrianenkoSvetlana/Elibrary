@@ -1,15 +1,15 @@
 defmodule ElibraryWeb.V1.CommentsView do
   use ElibraryWeb, :view
 
-  def render("index.json", %{page: page}) do
-    %{
-      entries: render_many(page.entries, __MODULE__, "show.json", as: :comment),
-      page_number: page.page_number,
-      page_size: page.page_size,
-      total_entries: page.total_entries,
-      total_pages: page.total_pages
-    }
-  end
+  # def render("index.json", %{page: page}) do
+  #   %{
+  #     entries: render_many(page.entries, __MODULE__, "show.json", as: :comment),
+  #     page_number: page.page_number,
+  #     page_size: page.page_size,
+  #     total_entries: page.total_entries,
+  #     total_pages: page.total_pages
+  #   }
+  # end
 
   def render("show.json", %{comment: comment}) do
     %{
@@ -52,7 +52,7 @@ defmodule ElibraryWeb.V1.CommentsView do
     }
   end
 
-  def render("delete.json", %{comment: comment}) do
-    %{}
+  def render("delete.json", %{comment: _comment}) do
+    "Delete succesfully"
   end
 end

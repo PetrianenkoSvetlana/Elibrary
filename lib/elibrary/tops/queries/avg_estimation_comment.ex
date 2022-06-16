@@ -7,10 +7,13 @@ defmodule Elibrary.Tops.Queries.AvgEstimationComment do
   }
 
   def process(comment_id) do
-    Top
-    |> by_comment(comment_id)
-    |> Repo.aggregate(:avg, :estimation)
-    |> avg()
+    top =
+      Top
+      |> by_comment(comment_id)
+      |> Repo.aggregate(:avg, :estimation)
+      |> avg()
+
+    %{top: top}
   end
 
   defp by_comment(query, comment_id) do

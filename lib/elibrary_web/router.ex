@@ -69,7 +69,7 @@ defmodule ElibraryWeb.Router do
 
     post "/users", UserController, :create
     resources "/books", BooksController, only: [:show, :index]
-    get "/comments", CommentsController, :index
+    # get "/comments", CommentsController, :index
     # get "/tops", TopsController, :show
 
     pipe_through [:user_auth, :ensure_auth]

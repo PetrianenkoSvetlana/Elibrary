@@ -2,7 +2,6 @@ defmodule Elibrary.Books.Commands.UpdateBookTest do
   use Elibrary.DataCase
 
   alias Elibrary.Books
-  alias Elibrary.Tops
 
   test "process/2 update_book with comments test" do
     book =
@@ -14,7 +13,7 @@ defmodule Elibrary.Books.Commands.UpdateBookTest do
         type: "book",
         language: "france",
         country: "France",
-        tags: insert(:tag)
+        tags: [insert(:tag)]
       })
 
     attrs = %{
@@ -25,8 +24,7 @@ defmodule Elibrary.Books.Commands.UpdateBookTest do
       type: "poem",
       language: "russian",
       country: "Russia",
-      tags: [insert(:tag)],
-      top: Tops.avg_estimation_book(book.id)
+      tags: [insert(:tag)]
     }
 
     assert {:ok, updated_book} = Books.update_book(book, attrs)
@@ -38,6 +36,5 @@ defmodule Elibrary.Books.Commands.UpdateBookTest do
     assert updated_book.language == attrs.language
     assert updated_book.country == attrs.country
     assert updated_book.tags == attrs.tags
-    assert updated_book.top == attrs.top
   end
 end

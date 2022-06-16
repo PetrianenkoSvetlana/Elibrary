@@ -8,6 +8,6 @@ defmodule Elibrary.Tops.Queries.AvgEstimationCommentTest do
     comment = insert(:comment)
     Tops.create_top(%{estimation: 3, user_id: user_1.id, comment_id: comment.id})
     Tops.create_top(%{estimation: 4, user_id: user_2.id, comment_id: comment.id})
-    assert 3.5 == Tops.avg_estimation_comment(comment.id)
+    assert %{top: 3.5} == Tops.avg_estimation_comment(comment.id)
   end
 end

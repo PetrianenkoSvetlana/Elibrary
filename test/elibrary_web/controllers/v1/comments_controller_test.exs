@@ -12,43 +12,43 @@ defmodule ElibraryWeb.V1.CommentsControllerTest do
     {:ok, %{conn: conn, book: books, user: user}}
   end
 
-  test "index/2 return list_comments", %{conn: conn, book: books, user: user} do
-    [book_1, book_2] = books
+  # test "index/2 return list_comments", %{conn: conn, book: books, user: user} do
+  #   [book_1, book_2] = books
 
-    [comment_1, comment_2] = insert_list(2, :comment, %{book: book_1, user: user})
-    insert_list(2, :comment, %{book: book_2, user: user})
+  #   [comment_1, comment_2] = insert_list(2, :comment, %{book: book_1, user: user})
+  #   insert_list(2, :comment, %{book: book_2, user: user})
 
-    attrs = %{page: 1, page_size: 10, book_id: book_1.id}
+  #   attrs = %{page: 1, page_size: 10, book_id: book_1.id}
 
-    response =
-      conn
-      |> get(comments_path(conn, :index), attrs)
-      |> json_response(200)
+  #   response =
+  #     conn
+  #     |> get(comments_path(conn, :index), attrs)
+  #     |> json_response(200)
 
-    assert response ==
-             %{
-               "entries" => [
-                 %{
-                   "id" => comment_1.id,
-                   "comment" => comment_1.comment,
-                   "book_id" => comment_1.book_id,
-                   "user_id" => comment_1.user_id,
-                   "top" => comment_1.top
-                 },
-                 %{
-                   "id" => comment_2.id,
-                   "comment" => comment_2.comment,
-                   "book_id" => comment_2.book_id,
-                   "user_id" => comment_2.user_id,
-                   "top" => comment_2.top
-                 }
-               ],
-               "page_number" => 1,
-               "page_size" => 10,
-               "total_entries" => 2,
-               "total_pages" => 1
-             }
-  end
+  #   assert response ==
+  #            %{
+  #              "entries" => [
+  #                %{
+  #                  "id" => comment_1.id,
+  #                  "comment" => comment_1.comment,
+  #                  "book_id" => comment_1.book_id,
+  #                  "user_id" => comment_1.user_id,
+  #                  "top" => comment_1.top
+  #                },
+  #                %{
+  #                  "id" => comment_2.id,
+  #                  "comment" => comment_2.comment,
+  #                  "book_id" => comment_2.book_id,
+  #                  "user_id" => comment_2.user_id,
+  #                  "top" => comment_2.top
+  #                }
+  #              ],
+  #              "page_number" => 1,
+  #              "page_size" => 10,
+  #              "total_entries" => 2,
+  #              "total_pages" => 1
+  #            }
+  # end
 
   test "create/2 create_comment test", %{conn: conn, book: books, user: user} do
     [book_1, _book_2] = books

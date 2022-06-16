@@ -34,6 +34,44 @@ defmodule ElibraryWeb.V1.TopsControllerTest do
            }
   end
 
+  test "create/2 create_top for book with error test", %{conn: conn, book: book} do
+    attrs = %{
+      "estimation" => 5,
+      "book_id" => book.id
+    }
+
+    response =
+      conn
+      |> post(tops_path(conn, :create), attrs)
+      |> json_response(201)
+
+    assert response == %{
+             "top" => %{
+               "id" => response["top"]["id"],
+               "estimation" => attrs["estimation"],
+               "user_id" => response["top"]["user_id"]
+             }
+           }
+
+    attrs = %{
+      "estimation" => 5,
+      "book_id" => book.id
+    }
+
+    response =
+      conn
+      |> post(tops_path(conn, :create), attrs)
+      |> json_response(201)
+
+    assert response == %{
+             "top" => %{
+               "id" => response["top"]["id"],
+               "estimation" => attrs["estimation"],
+               "user_id" => response["top"]["user_id"]
+             }
+           }
+  end
+
   test "create/2 create_top for comment test", %{conn: conn, comment: comment, user: user} do
     attrs = %{
       "estimation" => 5,
