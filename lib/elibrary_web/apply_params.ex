@@ -1,4 +1,4 @@
-defmodule Elibrary.ApplyParams do
+defmodule ElibraryWeb.ApplyParams do
   def do_apply(module_name, params) do
     case module_name.from(params) do
       %_{valid?: true} = changeset ->

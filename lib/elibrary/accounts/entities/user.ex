@@ -7,7 +7,19 @@ defmodule Elibrary.Accounts.Entities.User do
   alias Elibrary.Tops.Entities.Top
 
   # Обязательные поля
-  @required [:email, :password]
+  @required [
+    :email,
+    :password
+  ]
+
+  @optional [
+    :name,
+    :surname,
+    :patronymic,
+    :birthday,
+    :country,
+    :city
+  ]
   # Отображаем данные из таблицы users
   schema "users" do
     field :email, :string
@@ -28,7 +40,7 @@ defmodule Elibrary.Accounts.Entities.User do
 
   def create_changeset(%__MODULE__{} = user, attrs) do
     user
-    |> cast(attrs, @required)
+    |> cast(attrs, @required ++ @optional)
     |> validate_required(@required)
     |> unique_constraint(:email)
     |> validate_format(:password, ~r/^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,}/,
@@ -44,8 +56,7 @@ defmodule Elibrary.Accounts.Entities.User do
 
   def update_changeset(%__MODULE__{} = user, attrs) do
     user
-    |> cast(attrs, @required)
-    |> validate_required(@required)
+    |> cast(attrs, @required ++ @optional)
     |> unique_constraint(:email)
     |> validate_format(:password, ~r/^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,}/,
       message: "invalid_format"

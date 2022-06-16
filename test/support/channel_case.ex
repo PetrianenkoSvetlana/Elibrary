@@ -33,7 +33,7 @@ defmodule ElibraryWeb.ChannelCase do
 
   setup tags do
     pid = Sandbox.start_owner!(Repo, shared: not tags[:async])
-    on_exit(fn -> Sandbox.start_owner(pid) end)
+    on_exit(fn -> Sandbox.stop_owner(pid) end)
     :ok
   end
 end

@@ -6,9 +6,10 @@ defmodule Elibrary.Accounts.Commands.CreateUserTest do
   test "process/1 create_user test" do
     attrs = %{
       email: "forman@mail.ru",
-      password: "73940Jgu*7hj"
+      password: "73940Jgu*7hj",
+      name: "Dariya"
     }
 
-    assert {:ok, create_user} = Accounts.create_user(attrs)
+    assert {:ok, _create_user} = Accounts.create_user(attrs)
   end
 end

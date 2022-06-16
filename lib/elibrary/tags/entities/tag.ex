@@ -22,6 +22,7 @@ defmodule Elibrary.Tags.Entities.Tag do
     |> cast(attrs, @required)
     |> validate_required(@required)
     |> unique_constraint(:tag)
+
     # Set the association
     # |> put_assoc(:books, [attrs.books])
   end
@@ -32,6 +33,7 @@ defmodule Elibrary.Tags.Entities.Tag do
     |> cast(attrs, @required)
     |> validate_required(@required)
     |> unique_constraint(:tag)
+
     # Set the association
     # |> put_assoc(:books, [attrs.books])
   end

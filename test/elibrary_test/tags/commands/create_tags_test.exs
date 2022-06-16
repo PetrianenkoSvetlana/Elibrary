@@ -7,6 +7,7 @@ defmodule Elibrary.Tags.Commands.CreateTagTest do
     attrs = %{
       tag: "horror"
     }
-    assert {:ok, create_tag} = Tags.create_tag(attrs)
+
+    assert {:ok, _create_tag} = Tags.create_tag(attrs)
   end
 end

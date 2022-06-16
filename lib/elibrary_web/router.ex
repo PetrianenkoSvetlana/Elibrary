@@ -12,6 +12,16 @@ defmodule ElibraryWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug ProperCase.Plug.SnakeCaseParams
+  end
+
+  pipeline :user_auth do
+    plug Elibrary.Accounts.Guardian.Pipeline
+  end
+
+  pipeline :ensure_auth do
+    plug Guardian.Plug.EnsureAuthenticated
+    plug ElibraryWeb.CurrentUserPlug
   end
 
   scope "/", ElibraryWeb do
@@ -52,5 +62,20 @@ defmodule ElibraryWeb.Router do
 
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
+  end
+
+  scope "/api/v1", ElibraryWeb.V1 do
+    pipe_through [:api]
+
+    post "/users", UserController, :create
+    resources "/books", BooksController, only: [:show, :index]
+    get "/comments", CommentsController, :index
+    # get "/tops", TopsController, :show
+
+    pipe_through [:user_auth, :ensure_auth]
+
+    patch "/users/:id", UserController, :update
+    resources "/comments", CommentsController, only: [:create, :update, :delete]
+    resources "/tops", TopsController, only: [:create, :update, :delete]
   end
 end

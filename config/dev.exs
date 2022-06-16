@@ -13,6 +13,9 @@ config :elibrary, Elibrary.Repo,
   # show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
+config :elibrary, Elibrary.Accounts.Services.Guardian,
+  secret_key: "YlyxOIkewn18tIupgG0AyvhYMjW6s1GYrQmzJhhPIMW+EumBoSDhKjIMO+UTblYo"
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
@@ -27,10 +30,12 @@ config :elibrary, ElibraryWeb.Endpoint,
   code_reloader: true,
   debug_errors: true,
   secret_key_base: "4CZWG3f7xsnDqIIoNB62iEaOYIME3X4PEqDE2s5sjjvVLSAmHGNgH3ll/BMF+Lyd",
-  watchers: [
-    # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
-  ]
+  watchers: []
+
+# watchers: [
+#   # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
+#   esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+# ]
 
 # ## SSL Support
 #
