@@ -21,16 +21,16 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
              "book" => %{
                "ISBN" => book."ISBN",
                "author" => book.author,
-               "country" => nil,
-               "creation_year" => nil,
-               "date_of_publication" => nil,
+               "country" => book.country,
+               "creation_year" => book.creation_year,
+               "date_of_publication" => book.date_of_publication,
                "id" => book.id,
-               "language" => nil,
+               "language" => book.language,
                "publisher" => book.publisher,
                "thematics" => book.thematics,
                "title" => book.title,
-               "top" => nil,
-               "type" => nil
+               "top" => book.top,
+               "type" => book.type
              },
              "tags" => [%{"tag" => tag_1.tag}, %{"tag" => tag_2.tag}],
              "comments" => %{
@@ -264,8 +264,24 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
                 "total_entries" => 1,
                 "total_pages" => 1
               }
+
+    attrs = %{page: 1, page_size: 10, tag: "sgdfgdg"}
+
+    response =
+      conn
+      |> get(books_path(conn, :index), attrs)
+      |> json_response(200)
+
+    assert response ==
+             %{
+               "entries" => [
+               ],
+               "page_number" => 1,
+               "page_size" => 10,
+               "total_entries" => 0,
+               "total_pages" => 1
+             }
   end
-  @tag :xo
 
   test "index/2 return list books with filter", %{conn: conn} do
     book_1 = insert(:book, %{creation_year: 1984})
@@ -321,7 +337,7 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
                "total_pages" => 1
              }
 
-             attrs = %{page: 1, page_size: 10, from: 1800}
+    attrs = %{page: 1, page_size: 10, from: 1800}
 
     response =
       conn

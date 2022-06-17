@@ -34,7 +34,7 @@ defmodule ElibraryWeb.V1.TopsControllerTest do
            }
   end
 
-  test "create/2 create_top for book with error test", %{conn: conn, book: book} do
+  test "create/2 create_top for book with error test", %{conn: conn, book: book, user: user} do
     attrs = %{
       "estimation" => 5,
       "book_id" => book.id
@@ -54,22 +54,41 @@ defmodule ElibraryWeb.V1.TopsControllerTest do
            }
 
     attrs = %{
-      "estimation" => 5,
+      "estimation" => 546,
       "book_id" => book.id
     }
 
     response =
       conn
       |> post(tops_path(conn, :create), attrs)
-      |> json_response(201)
+      |> json_response(422)
 
-    assert response == %{
-             "top" => %{
-               "id" => response["top"]["id"],
-               "estimation" => attrs["estimation"],
-               "user_id" => response["top"]["user_id"]
-             }
-           }
+    assert response == %{"errors" => [%{"code" => "Both fields are empty", "field" => ["book_id", "comment_id"]}, %{"code" => "must be less than or equal to %{number}", "field" => "estimation"}]}
+
+    attrs = %{
+      "estimation" => "",
+      "user_id" => user.id,
+      "book_id" => book.id
+    }
+
+    response =
+      conn
+      |> post(tops_path(conn, :create), attrs)
+      |> json_response(422)
+
+    assert response == %{"errors" => [%{"code" => "can't be blank", "field" => "estimation"}]}
+
+    attrs = %{
+      "estimation" => 5,
+      "user_id" => user.id
+    }
+
+    response =
+      conn
+      |> post(tops_path(conn, :create), attrs)
+      |> json_response(422)
+
+    assert response == %{"errors" => [%{"code" => "Both fields are empty", "field" => ["book_id", "comment_id"]}]}
   end
 
   test "create/2 create_top for comment test", %{conn: conn, comment: comment, user: user} do
@@ -93,6 +112,63 @@ defmodule ElibraryWeb.V1.TopsControllerTest do
            }
   end
 
+  test "create/2 create_top for comment with error test", %{conn: conn, comment: comment, user: user} do
+    attrs = %{
+      "estimation" => 5,
+      "comment_id" => comment.id
+    }
+
+    response =
+      conn
+      |> post(tops_path(conn, :create), attrs)
+      |> json_response(201)
+
+    assert response == %{
+             "top" => %{
+               "id" => response["top"]["id"],
+               "estimation" => attrs["estimation"],
+               "user_id" => response["top"]["user_id"]
+             }
+           }
+
+    attrs = %{
+      "estimation" => "",
+      "user_id" => user.id,
+      "comment_id" => comment.id
+    }
+
+    response =
+      conn
+      |> post(tops_path(conn, :create), attrs)
+      |> json_response(422)
+
+    assert response == %{"errors" => [%{"code" => "can't be blank", "field" => "estimation"}]}
+
+    attrs = %{
+      "estimation" => 546,
+      "comment_id" => comment.id
+    }
+
+    response =
+      conn
+      |> post(tops_path(conn, :create), attrs)
+      |> json_response(422)
+
+    assert response == %{"errors" => [%{"code" => "Both fields are empty", "field" => ["book_id", "comment_id"]}, %{"code" => "must be less than or equal to %{number}", "field" => "estimation"}]}
+
+    attrs = %{
+      "estimation" => 5,
+      "user_id" => user.id
+    }
+
+    response =
+      conn
+      |> post(tops_path(conn, :create), attrs)
+      |> json_response(422)
+
+    assert response == %{"errors" => [%{"code" => "Both fields are empty", "field" => ["book_id", "comment_id"]}]}
+  end
+
   test "update/2 update top for book test", %{conn: conn, user: user} do
     top = insert(:top)
 
@@ -109,6 +185,27 @@ defmodule ElibraryWeb.V1.TopsControllerTest do
              "top" => %{
                "id" => top.id,
                "estimation" => attrs["estimation"],
+               "user_id" => user.id
+             }
+           }
+  end
+
+  test "update/2 update top for book with error test", %{conn: conn, user: user} do
+    top = insert(:top)
+
+    attrs = %{
+      "estimation" => ""
+    }
+
+    response =
+      conn
+      |> patch(tops_path(conn, :update, top, attrs))
+      |> json_response(200)
+
+    assert response == %{
+             "top" => %{
+               "id" => top.id,
+               "estimation" => response["top"]["estimation"],
                "user_id" => user.id
              }
            }

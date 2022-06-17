@@ -36,6 +36,30 @@ defmodule ElibraryWeb.V1.UserControllerTest do
            }
   end
 
+  test "create/2 create user with error", %{conn: conn} do
+    attrs = %{
+      "email" => "hhdsjnh@hajdh.com"
+    }
+
+    response =
+      conn
+      |> post(user_path(conn, :create), attrs)
+      |> json_response(422)
+
+    assert response == %{"errors" => [%{"code" => "can't be blank", "field" => "password"}]}
+
+    attrs = %{
+      "password" => "76ygvtd587gS"
+    }
+
+    response =
+      conn
+      |> post(user_path(conn, :create), attrs)
+      |> json_response(422)
+
+    assert response == %{"errors" => [%{"code" => "can't be blank", "field" => "email"}]}
+  end
+
   test "update/2 update user", %{conn: conn, user: user} do
     attrs = %{
       "city" => "Toronto",
@@ -59,6 +83,30 @@ defmodule ElibraryWeb.V1.UserControllerTest do
                "name" => attrs["name"],
                "patronymic" => attrs["patronymic"],
                "surname" => attrs["surname"]
+             }
+           }
+  end
+
+  test "update/2 update user with error", %{conn: conn, user: user} do
+    attrs = %{
+      "email" => ""
+    }
+
+    response =
+      conn
+      |> patch(user_path(conn, :update, user, attrs))
+      |> json_response(200)
+
+    assert response == %{
+             "user" => %{
+               "id" => user.id,
+               "birthday" => user.birthday,
+               "city" => user.city,
+               "country" => user.country,
+               "email" => response["user"]["email"],
+               "name" => user.name,
+               "patronymic" => user.patronymic,
+               "surname" => user.surname
              }
            }
   end
