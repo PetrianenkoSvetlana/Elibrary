@@ -4,8 +4,22 @@ defmodule ElibraryWeb.V1.BooksController do
   alias Elibrary.Books
   alias Elibrary.Tags
   alias Elibrary.Comments
+  alias Ecto.Changeset
 
   action_fallback(ElibraryWeb.FallbackController)
+
+  defmodule IndexBookParams do
+    use Params.Schema, %{
+      title: :string,
+      author: :string,
+      publisher: :string,
+      tag: :string,
+      from: :integer,
+      to: :integer,
+      page: :integer,
+      page_size: :integer
+    }
+  end
 
   def show(conn, %{"id" => id} = params) do
     with {:ok, book} <- Books.get_book(id),
@@ -16,7 +30,22 @@ defmodule ElibraryWeb.V1.BooksController do
   end
 
   def index(conn, params) do
-    page = Books.list_books(params)
-    render(conn, "index.json", %{page: page})
+    with {:ok, params} <- ApplyParams.do_apply(IndexBookParams, params) do
+      page = Books.list_books(params)
+      render(conn, "index.json", %{page: page})
+    else
+      {:error, %Changeset{} = changeset} ->
+        with %Changeset{errors: errors} <- changeset,
+             params <- not_error(params, errors) do
+          {:ok, params} = ApplyParams.do_apply(IndexBookParams, params)
+          page = Books.list_books(params)
+          render(conn, "index.json", %{page: page})
+        end
+    end
+  end
+
+  defp not_error(params, errors) do
+    fields = Enum.map(errors, fn {field, _} -> to_string(field) end)
+    Map.drop(params, fields)
   end
 end

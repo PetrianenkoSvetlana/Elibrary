@@ -12,6 +12,7 @@ defmodule Elibrary.Factories.Books.BookFactory do
         thematics = Map.get(attrs, :thematics, Lorem.word())
         tags = Map.get(attrs, :tags, [])
         comments = Map.get(attrs, :comments, [])
+        creation_year = Map.get(attrs, :creation_year, Enum.random(1500..2022))
 
         %Book{
           title: title,
@@ -20,7 +21,8 @@ defmodule Elibrary.Factories.Books.BookFactory do
           publisher: publisher,
           thematics: thematics,
           tags: tags,
-          comments: comments
+          comments: comments,
+          creation_year: creation_year
         }
       end
     end

@@ -2,7 +2,7 @@ defmodule ElibraryWeb.FallbackController do
   use ElibraryWeb, :controller
 
   alias Ecto.Changeset
-  alias Elibrary.ErrorView
+  alias ElibraryWeb.ErrorView
 
   def call(%Conn{} = conn, {:error, :not_found}) do
     conn
@@ -20,7 +20,7 @@ defmodule ElibraryWeb.FallbackController do
 
   def call(%Conn{} = conn, {:error, %Changeset{} = changeset}) do
     conn
-    |> put_status(:unprocessaable_entity)
+    |> put_status(:unprocessable_entity)
     |> put_view(ErrorView)
     |> render("422.json", changeset: changeset)
   end

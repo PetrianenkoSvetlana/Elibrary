@@ -77,8 +77,24 @@ defmodule ElibraryWeb.V1.CommentsControllerTest do
            }
   end
 
+  test "create/2 create_comment test with error", %{conn: conn, book: books} do
+    [book_1, _book_2] = books
+
+    attrs = %{
+      "comment" => "",
+      "book_id" => book_1.id
+    }
+
+    response =
+      conn
+      |> post(comments_path(conn, :create), attrs)
+      |> json_response(422)
+
+    assert response == %{"errors" => [%{"code" => "can't be blank", "field" => "comment"}]}
+  end
+
   test "update/2 update comment", %{conn: conn, user: user} do
-    comment = insert(:comment)
+    comment = insert(:comment, %{user: user})
 
     attrs = %{
       "comment" => "Funny book"
@@ -93,6 +109,33 @@ defmodule ElibraryWeb.V1.CommentsControllerTest do
              "comment" => %{
                "id" => comment.id,
                "comment" => attrs["comment"],
+               "book_id" => comment.book_id,
+               "user_id" => user.id,
+               "top" => comment.top
+             },
+             "current_user" => %{
+               "name" => user.name,
+               "surname" => user.surname
+             }
+           }
+  end
+
+  test "update/2 update comment with error", %{conn: conn, user: user} do
+    comment = insert(:comment, %{user: user})
+
+    attrs = %{
+      "comment" => ""
+    }
+
+    response =
+      conn
+      |> patch(comments_path(conn, :update, comment, attrs))
+      |> json_response(200)
+
+    assert response == %{
+             "comment" => %{
+               "id" => comment.id,
+               "comment" => response["comment"]["comment"],
                "book_id" => comment.book_id,
                "user_id" => user.id,
                "top" => comment.top

@@ -3,6 +3,7 @@ defmodule ElibraryWeb.V1.TopsController do
 
   alias Elibrary.Tops
   alias ElibraryWeb.ApplyParams
+  alias ElibraryWeb.V1.TopsPolicy
 
   action_fallback(ElibraryWeb.FallbackController)
 
@@ -25,7 +26,8 @@ defmodule ElibraryWeb.V1.TopsController do
   def create(conn, %{"current_user" => current_user} = param) do
     with {:ok, param} <- ApplyParams.do_apply(CreateTopParams, param),
          param <- Map.put(param, :user_id, current_user.id),
-         {:ok, top} <- Tops.create_top(param) do
+         {:ok, top} <- Tops.create_top(param),
+         :ok <- Bodyguard.permit(TopsPolicy, :create, current_user, top) do
       conn
       |> put_status(:created)
       |> render("create.json", %{top: top})
@@ -36,13 +38,15 @@ defmodule ElibraryWeb.V1.TopsController do
     with {:ok, param} <- ApplyParams.do_apply(UpdateTopParams, param),
          param <- Map.put(param, :user_id, current_user.id),
          {:ok, top} <- Tops.get_top(id),
-         {:ok, top} <- Tops.update_top(top, param) do
+         {:ok, top} <- Tops.update_top(top, param),
+         :ok <- Bodyguard.permit(TopsPolicy, :create, current_user, top) do
       render(conn, "update.json", %{top: top, current_user: current_user})
     end
   end
 
   def delete(conn, %{"current_user" => current_user, "id" => id}) do
-    with {:ok, top} <- Tops.get_top(id) do
+    with {:ok, top} <- Tops.get_top(id),
+         :ok <- Bodyguard.permit(TopsPolicy, :create, current_user, top) do
       if top.user_id == current_user.id do
         Tops.delete_top(top)
         render(conn, "delete.json", %{top: top})

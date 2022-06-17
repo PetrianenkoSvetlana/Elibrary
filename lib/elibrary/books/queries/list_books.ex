@@ -10,10 +10,7 @@ defmodule Elibrary.Books.Queries.ListBooks do
     |> with_author(params)
     |> with_publisher(params)
     |> with_tags(params)
-    |> filter_with_top(params)
-    |> filter_with_creation_year(params)
-    |> search_with_top(params)
-    |> search_with_creation_year(params)
+    |> filter(params)
     |> Repo.paginate(params)
   end
 
@@ -49,37 +46,27 @@ defmodule Elibrary.Books.Queries.ListBooks do
 
     from book in query,
       join: tags in assoc(book, :tags),
-      where: ilike(tags.tag, ^tag),
-      preload: [tags: tags]
+      where: ilike(tags.tag, ^tag)
+
+    # preload: [tags: tags]
   end
 
   defp with_tags(query, _), do: query
 
-  defp filter_with_top(query, %{top: top}) do
+  defp filter(query, %{from: from, to: to}) do
     from book in query,
-      where: book.top >= ^top
+      where: book.creation_year >= ^from and book.creation_year <= ^to
   end
 
-  defp filter_with_top(query, _), do: query
-
-  defp filter_with_creation_year(query, %{creation_year: creation_year}) do
+  defp filter(query, %{from: from}) do
     from book in query,
-      where: book.creation_year >= ^creation_year
+      where: book.creation_year >= ^from
   end
 
-  defp filter_with_creation_year(query, _), do: query
-
-  defp search_with_top(query, %{top: top}) do
+  defp filter(query, %{to: to}) do
     from book in query,
-      where: book.top == ^top
+      where: book.creation_year <= ^to
   end
 
-  defp search_with_top(query, _), do: query
-
-  defp search_with_creation_year(query, %{creation_year: creation_year}) do
-    from book in query,
-      where: book.creation_year == ^creation_year
-  end
-
-  defp search_with_creation_year(query, _), do: query
+  defp filter(query, _), do: query
 end
