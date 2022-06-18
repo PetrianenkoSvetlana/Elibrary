@@ -151,10 +151,12 @@ defmodule ElibraryWeb.V1.CommentsControllerTest do
     [book_1, _book_2] = books
     comment = insert(:comment, %{book: book_1, user: user})
 
-    conn
-    |> delete(comments_path(conn, :delete, comment.id))
-    |> json_response(200)
+    response =
+      conn
+      |> delete(comments_path(conn, :delete, comment.id))
+      |> json_response(200)
 
+    assert response == "Delete succesfully"
     assert {:error, :not_found} = Comments.get_comment(comment.id)
   end
 end

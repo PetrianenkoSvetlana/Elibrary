@@ -54,7 +54,7 @@ defmodule ElibraryWeb.V1.CommentsController do
          :ok <- Bodyguard.permit(CommentPolicy, :delete, current_user, comment) do
       if comment.user_id == current_user.id do
         Comments.delete_comment(comment)
-        render(conn, "delete.json", %{comment: comment})
+        render(conn, "delete.json",  %{})
       end
     end
   end

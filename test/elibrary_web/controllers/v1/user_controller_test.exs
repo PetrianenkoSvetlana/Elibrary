@@ -103,7 +103,7 @@ defmodule ElibraryWeb.V1.UserControllerTest do
                "birthday" => user.birthday,
                "city" => user.city,
                "country" => user.country,
-               "email" => response["user"]["email"],
+               "email" => user.email,
                "name" => user.name,
                "patronymic" => user.patronymic,
                "surname" => user.surname

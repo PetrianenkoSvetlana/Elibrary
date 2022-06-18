@@ -50,17 +50,15 @@ defmodule Elibrary.Tops.Entities.Top do
     |> assoc_constraint(:comment)
   end
 
-  defp evaluation_determinant(
-         %{valid?: true, changes: %{book_id: _book_id, comment_id: _comment_id}} = changeset
-       ),
-       do: add_error(changeset, [:book_id, :comment_id], "Both fields are filled in")
+  defp evaluation_determinant(%{changes: %{book_id: _book_id, comment_id: _comment_id}} = changeset),
+    do: add_error(changeset, [:book_id, :comment_id], "Both fields are filled in")
 
-  defp evaluation_determinant(%{valid?: true, changes: %{book_id: _book_id}} = changeset),
+  defp evaluation_determinant(%{changes: %{book_id: _book_id}} = changeset),
     do: changeset
 
-  defp evaluation_determinant(%{valid?: true, changes: %{comment_id: _comment_id}} = changeset),
+  defp evaluation_determinant(%{changes: %{comment_id: _comment_id}} = changeset),
     do: changeset
 
-  defp evaluation_determinant(changeset),
+  defp evaluation_determinant(%{changes: %{}} = changeset),
     do: add_error(changeset, [:book_id, :comment_id], "Both fields are empty")
 end

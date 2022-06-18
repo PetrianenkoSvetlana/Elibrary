@@ -52,7 +52,7 @@ defmodule ElibraryWeb.V1.CommentsView do
     }
   end
 
-  def render("delete.json", %{comment: _comment}) do
+  def render("delete.json", %{}) do
     "Delete succesfully"
   end
 end
