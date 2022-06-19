@@ -63,6 +63,15 @@ defmodule Elibrary.Books.Entities.Book do
     |> cast(attrs, @required ++ @optional)
     |> validate_required(@required)
     |> unique_constraint(:ISBN)
-    |> put_assoc(:tags, attrs.tags)
+    |> update_tags(attrs)
+  end
+
+  defp update_tags(changeset, attrs) do
+    if Map.has_key?(attrs, :tags) do
+      changeset
+      |> put_assoc(:tags, attrs.tags)
+    else
+      changeset
+    end
   end
 end

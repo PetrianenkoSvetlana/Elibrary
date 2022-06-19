@@ -34,7 +34,12 @@ defmodule ElibraryWeb.V1.TopsControllerTest do
            }
   end
 
-  test "create/2 create_top for book with error test", %{conn: conn, book: book, user: user, comment: comment} do
+  test "create/2 create_top for book with error test", %{
+    conn: conn,
+    book: book,
+    user: user,
+    comment: comment
+  } do
     attrs = %{
       "estimation" => 5,
       "book_id" => book.id
@@ -63,7 +68,11 @@ defmodule ElibraryWeb.V1.TopsControllerTest do
       |> post(tops_path(conn, :create), attrs)
       |> json_response(422)
 
-    assert response == %{"errors" => [%{"code" => "must be less than or equal to %{number}", "field" => "estimation"}]}
+    assert response == %{
+             "errors" => [
+               %{"code" => "must be less than or equal to %{number}", "field" => "estimation"}
+             ]
+           }
 
     attrs = %{
       "estimation" => 5,
@@ -75,7 +84,11 @@ defmodule ElibraryWeb.V1.TopsControllerTest do
       |> post(tops_path(conn, :create), attrs)
       |> json_response(422)
 
-    assert response == %{"errors" => [%{"code" => "Both fields are empty", "field" => ["book_id", "comment_id"]}]}
+    assert response == %{
+             "errors" => [
+               %{"code" => "Both fields are empty", "field" => ["book_id", "comment_id"]}
+             ]
+           }
 
     attrs = %{
       "estimation" => 5,
@@ -88,11 +101,18 @@ defmodule ElibraryWeb.V1.TopsControllerTest do
       |> post(tops_path(conn, :create), attrs)
       |> json_response(422)
 
-    assert response == %{"errors" => [%{"code" => "Both fields are filled in", "field" => ["book_id", "comment_id"]}]}
+    assert response == %{
+             "errors" => [
+               %{"code" => "Both fields are filled in", "field" => ["book_id", "comment_id"]}
+             ]
+           }
   end
 
-  test "create/2 create_top for book with empty estimation test", %{conn: conn, book: book, user: user} do
-
+  test "create/2 create_top for book with empty estimation test", %{
+    conn: conn,
+    book: book,
+    user: user
+  } do
     attrs = %{
       "estimation" => "",
       "user_id" => user.id,
@@ -128,7 +148,12 @@ defmodule ElibraryWeb.V1.TopsControllerTest do
            }
   end
 
-  test "create/2 create_top for comment with error test", %{conn: conn, comment: comment, user: user, book: book} do
+  test "create/2 create_top for comment with error test", %{
+    conn: conn,
+    comment: comment,
+    user: user,
+    book: book
+  } do
     attrs = %{
       "estimation" => 5,
       "comment_id" => comment.id
@@ -170,7 +195,11 @@ defmodule ElibraryWeb.V1.TopsControllerTest do
       |> post(tops_path(conn, :create), attrs)
       |> json_response(422)
 
-    assert response == %{"errors" => [%{"code" => "must be less than or equal to %{number}", "field" => "estimation"}]}
+    assert response == %{
+             "errors" => [
+               %{"code" => "must be less than or equal to %{number}", "field" => "estimation"}
+             ]
+           }
 
     attrs = %{
       "estimation" => 5,
@@ -182,7 +211,11 @@ defmodule ElibraryWeb.V1.TopsControllerTest do
       |> post(tops_path(conn, :create), attrs)
       |> json_response(422)
 
-    assert response == %{"errors" => [%{"code" => "Both fields are empty", "field" => ["book_id", "comment_id"]}]}
+    assert response == %{
+             "errors" => [
+               %{"code" => "Both fields are empty", "field" => ["book_id", "comment_id"]}
+             ]
+           }
 
     attrs = %{
       "estimation" => 5,
@@ -195,7 +228,11 @@ defmodule ElibraryWeb.V1.TopsControllerTest do
       |> post(tops_path(conn, :create), attrs)
       |> json_response(422)
 
-    assert response == %{"errors" => [%{"code" => "Both fields are filled in", "field" => ["book_id", "comment_id"]}]}
+    assert response == %{
+             "errors" => [
+               %{"code" => "Both fields are filled in", "field" => ["book_id", "comment_id"]}
+             ]
+           }
   end
 
   test "update/2 update top for book test", %{conn: conn, user: user} do

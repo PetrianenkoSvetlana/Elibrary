@@ -11,6 +11,9 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
     [tag_1, tag_2] = insert_list(2, :tag)
     book = insert(:book, %{tags: [tag_1, tag_2]})
     [comment_1, comment_2] = insert_list(2, :comment, %{book: book})
+    list_tops_books = insert_list(2, :top, %{book_id: book})
+    insert_list(2, :top, %{comment_id: comment_1})
+    insert_list(2, :top, %{comment_id: comment_2})
 
     response =
       conn
@@ -29,7 +32,9 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
                "publisher" => book.publisher,
                "thematics" => book.thematics,
                "title" => book.title,
-               "top" => book.top,
+               "top" =>
+                 Enum.reduce(list_tops_books, 0, fn x, acc -> x.estimation + acc end) /
+                   length(list_tops_books),
                "type" => book.type
              },
              "tags" => [%{"tag" => tag_1.tag}, %{"tag" => tag_2.tag}],
@@ -65,7 +70,7 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
 
     response =
       conn
-      |> get(books_path(conn, :show, 345344534))
+      |> get(books_path(conn, :show, 345_344_534))
       |> json_response(404)
 
     assert response == %{"errors" => ["Not found"]}
@@ -133,9 +138,32 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
   end
 
   test "index/2 return list books with string fields", %{conn: conn} do
-    book_1 = insert(:book, %{title: "Война и мир", author: "Толстой Л.Н.", publisher: "Художественная литература", tags: [insert(:tag, %{tag: "horror"})], creation_year: 1984})
-    book_2 = insert(:book, %{title: "Юность", author: "Толстой Л.Н.", publisher: "Вече", tags: [insert(:tag, %{tag: "doram"})], creation_year: 1678})
-    book_3 = insert(:book, %{title: "Тихи Дон", author: "Шолохов М.А..", publisher: "Художественная литература", tags: [insert(:tag, %{tag: "horror"})], creation_year: 1984})
+    book_1 =
+      insert(:book, %{
+        title: "Война и мир",
+        author: "Толстой Л.Н.",
+        publisher: "Художественная литература",
+        tags: [insert(:tag, %{tag: "horror"})],
+        creation_year: 1984
+      })
+
+    book_2 =
+      insert(:book, %{
+        title: "Юность",
+        author: "Толстой Л.Н.",
+        publisher: "Вече",
+        tags: [insert(:tag, %{tag: "doram"})],
+        creation_year: 1678
+      })
+
+    book_3 =
+      insert(:book, %{
+        title: "Тихи Дон",
+        author: "Шолохов М.А..",
+        publisher: "Художественная литература",
+        tags: [insert(:tag, %{tag: "horror"})],
+        creation_year: 1984
+      })
 
     attrs = %{page: 1, page_size: 10, tag: "horror"}
 
@@ -182,24 +210,24 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
       |> json_response(200)
 
     assert response ==
-              %{
-                "entries" => [
-                  %{
-                    "title" => book_2.title,
-                    "type" => book_2.type,
-                    "author" => book_2.author,
-                    "publisher" => book_2.publisher,
-                    "language" => book_2.language,
-                    "creation_year" => book_2.creation_year,
-                    "thematics" => book_2.thematics,
-                    "top" => book_2.top
-                  }
-                ],
-                "page_number" => 1,
-                "page_size" => 10,
-                "total_entries" => 1,
-                "total_pages" => 1
-              }
+             %{
+               "entries" => [
+                 %{
+                   "title" => book_2.title,
+                   "type" => book_2.type,
+                   "author" => book_2.author,
+                   "publisher" => book_2.publisher,
+                   "language" => book_2.language,
+                   "creation_year" => book_2.creation_year,
+                   "thematics" => book_2.thematics,
+                   "top" => book_2.top
+                 }
+               ],
+               "page_number" => 1,
+               "page_size" => 10,
+               "total_entries" => 1,
+               "total_pages" => 1
+             }
 
     attrs = %{page: 1, page_size: 10, author: "Толстой Л.Н."}
 
@@ -209,34 +237,34 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
       |> json_response(200)
 
     assert response ==
-              %{
-                "entries" => [
-                  %{
-                    "title" => book_1.title,
-                    "type" => book_1.type,
-                    "author" => book_1.author,
-                    "publisher" => book_1.publisher,
-                    "language" => book_1.language,
-                    "creation_year" => book_1.creation_year,
-                    "thematics" => book_1.thematics,
-                    "top" => book_1.top
-                  },
-                  %{
-                    "title" => book_2.title,
-                    "type" => book_2.type,
-                    "author" => book_2.author,
-                    "publisher" => book_2.publisher,
-                    "language" => book_2.language,
-                    "creation_year" => book_2.creation_year,
-                    "thematics" => book_2.thematics,
-                    "top" => book_2.top
-                  }
-                ],
-                "page_number" => 1,
-                "page_size" => 10,
-                "total_entries" => 2,
-                "total_pages" => 1
-              }
+             %{
+               "entries" => [
+                 %{
+                   "title" => book_1.title,
+                   "type" => book_1.type,
+                   "author" => book_1.author,
+                   "publisher" => book_1.publisher,
+                   "language" => book_1.language,
+                   "creation_year" => book_1.creation_year,
+                   "thematics" => book_1.thematics,
+                   "top" => book_1.top
+                 },
+                 %{
+                   "title" => book_2.title,
+                   "type" => book_2.type,
+                   "author" => book_2.author,
+                   "publisher" => book_2.publisher,
+                   "language" => book_2.language,
+                   "creation_year" => book_2.creation_year,
+                   "thematics" => book_2.thematics,
+                   "top" => book_2.top
+                 }
+               ],
+               "page_number" => 1,
+               "page_size" => 10,
+               "total_entries" => 2,
+               "total_pages" => 1
+             }
 
     attrs = %{page: 1, page_size: 10, publisher: "Вече"}
 
@@ -246,24 +274,24 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
       |> json_response(200)
 
     assert response ==
-              %{
-                "entries" => [
-                  %{
-                    "title" => book_2.title,
-                    "type" => book_2.type,
-                    "author" => book_2.author,
-                    "publisher" => book_2.publisher,
-                    "language" => book_2.language,
-                    "creation_year" => book_2.creation_year,
-                    "thematics" => book_2.thematics,
-                    "top" => book_2.top
-                  }
-                ],
-                "page_number" => 1,
-                "page_size" => 10,
-                "total_entries" => 1,
-                "total_pages" => 1
-              }
+             %{
+               "entries" => [
+                 %{
+                   "title" => book_2.title,
+                   "type" => book_2.type,
+                   "author" => book_2.author,
+                   "publisher" => book_2.publisher,
+                   "language" => book_2.language,
+                   "creation_year" => book_2.creation_year,
+                   "thematics" => book_2.thematics,
+                   "top" => book_2.top
+                 }
+               ],
+               "page_number" => 1,
+               "page_size" => 10,
+               "total_entries" => 1,
+               "total_pages" => 1
+             }
 
     attrs = %{page: 1, page_size: 10, tag: "sgdfgdg"}
 
@@ -274,8 +302,7 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
 
     assert response ==
              %{
-               "entries" => [
-               ],
+               "entries" => [],
                "page_number" => 1,
                "page_size" => 10,
                "total_entries" => 0,
@@ -321,15 +348,15 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
                    "top" => book_3.top
                  },
                  %{
-                  "title" => book_4.title,
-                  "type" => book_4.type,
-                  "author" => book_4.author,
-                  "publisher" => book_4.publisher,
-                  "language" => book_4.language,
-                  "creation_year" => book_4.creation_year,
-                  "thematics" => book_4.thematics,
-                  "top" => book_4.top
-                }
+                   "title" => book_4.title,
+                   "type" => book_4.type,
+                   "author" => book_4.author,
+                   "publisher" => book_4.publisher,
+                   "language" => book_4.language,
+                   "creation_year" => book_4.creation_year,
+                   "thematics" => book_4.thematics,
+                   "top" => book_4.top
+                 }
                ],
                "page_number" => 1,
                "page_size" => 10,
@@ -368,25 +395,25 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
                    "top" => book_3.top
                  },
                  %{
-                  "title" => book_4.title,
-                  "type" => book_4.type,
-                  "author" => book_4.author,
-                  "publisher" => book_4.publisher,
-                  "language" => book_4.language,
-                  "creation_year" => book_4.creation_year,
-                  "thematics" => book_4.thematics,
-                  "top" => book_4.top
-                },
-                %{
-                  "title" => book_5.title,
-                  "type" => book_5.type,
-                  "author" => book_5.author,
-                  "publisher" => book_5.publisher,
-                  "language" => book_5.language,
-                  "creation_year" => book_5.creation_year,
-                  "thematics" => book_5.thematics,
-                  "top" => book_5.top
-                }
+                   "title" => book_4.title,
+                   "type" => book_4.type,
+                   "author" => book_4.author,
+                   "publisher" => book_4.publisher,
+                   "language" => book_4.language,
+                   "creation_year" => book_4.creation_year,
+                   "thematics" => book_4.thematics,
+                   "top" => book_4.top
+                 },
+                 %{
+                   "title" => book_5.title,
+                   "type" => book_5.type,
+                   "author" => book_5.author,
+                   "publisher" => book_5.publisher,
+                   "language" => book_5.language,
+                   "creation_year" => book_5.creation_year,
+                   "thematics" => book_5.thematics,
+                   "top" => book_5.top
+                 }
                ],
                "page_number" => 1,
                "page_size" => 10,
@@ -394,7 +421,7 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
                "total_pages" => 1
              }
 
-             attrs = %{page: 1, page_size: 10, to: 1800}
+    attrs = %{page: 1, page_size: 10, to: 1800}
 
     response =
       conn
@@ -431,56 +458,56 @@ defmodule ElibraryWeb.V1.BooksControllerTest do
     assert response ==
              %{
                "entries" => [
-                %{
-                  "title" => book_1.title,
-                  "type" => book_1.type,
-                  "author" => book_1.author,
-                  "publisher" => book_1.publisher,
-                  "language" => book_1.language,
-                  "creation_year" => book_1.creation_year,
-                  "thematics" => book_1.thematics,
-                  "top" => book_1.top
-                },
-                %{
-                  "title" => book_2.title,
-                  "type" => book_2.type,
-                  "author" => book_2.author,
-                  "publisher" => book_2.publisher,
-                  "language" => book_2.language,
-                  "creation_year" => book_2.creation_year,
-                  "thematics" => book_2.thematics,
-                  "top" => book_2.top
-                },
-                %{
-                  "title" => book_3.title,
-                  "type" => book_3.type,
-                  "author" => book_3.author,
-                  "publisher" => book_3.publisher,
-                  "language" => book_3.language,
-                  "creation_year" => book_3.creation_year,
-                  "thematics" => book_3.thematics,
-                  "top" => book_3.top
-                },
-                %{
-                  "title" => book_4.title,
-                  "type" => book_4.type,
-                  "author" => book_4.author,
-                  "publisher" => book_4.publisher,
-                  "language" => book_4.language,
-                  "creation_year" => book_4.creation_year,
-                  "thematics" => book_4.thematics,
-                  "top" => book_4.top
-                },
-                %{
-                  "title" => book_5.title,
-                  "type" => book_5.type,
-                  "author" => book_5.author,
-                  "publisher" => book_5.publisher,
-                  "language" => book_5.language,
-                  "creation_year" => book_5.creation_year,
-                  "thematics" => book_5.thematics,
-                  "top" => book_5.top
-                }
+                 %{
+                   "title" => book_1.title,
+                   "type" => book_1.type,
+                   "author" => book_1.author,
+                   "publisher" => book_1.publisher,
+                   "language" => book_1.language,
+                   "creation_year" => book_1.creation_year,
+                   "thematics" => book_1.thematics,
+                   "top" => book_1.top
+                 },
+                 %{
+                   "title" => book_2.title,
+                   "type" => book_2.type,
+                   "author" => book_2.author,
+                   "publisher" => book_2.publisher,
+                   "language" => book_2.language,
+                   "creation_year" => book_2.creation_year,
+                   "thematics" => book_2.thematics,
+                   "top" => book_2.top
+                 },
+                 %{
+                   "title" => book_3.title,
+                   "type" => book_3.type,
+                   "author" => book_3.author,
+                   "publisher" => book_3.publisher,
+                   "language" => book_3.language,
+                   "creation_year" => book_3.creation_year,
+                   "thematics" => book_3.thematics,
+                   "top" => book_3.top
+                 },
+                 %{
+                   "title" => book_4.title,
+                   "type" => book_4.type,
+                   "author" => book_4.author,
+                   "publisher" => book_4.publisher,
+                   "language" => book_4.language,
+                   "creation_year" => book_4.creation_year,
+                   "thematics" => book_4.thematics,
+                   "top" => book_4.top
+                 },
+                 %{
+                   "title" => book_5.title,
+                   "type" => book_5.type,
+                   "author" => book_5.author,
+                   "publisher" => book_5.publisher,
+                   "language" => book_5.language,
+                   "creation_year" => book_5.creation_year,
+                   "thematics" => book_5.thematics,
+                   "top" => book_5.top
+                 }
                ],
                "page_number" => 1,
                "page_size" => 10,

@@ -3,6 +3,7 @@ defmodule Elibrary.Books.Commands.UpdateBookTest do
 
   alias Elibrary.Books
 
+  @tag :kek
   test "process/2 update_book with comments test" do
     book =
       insert(:book, %{
